@@ -1,5 +1,5 @@
 from docker:git
-From docker:18.06.3-ce-dind
+from docker:18.06.3-ce-dind
 
 
 RUN apk add --no-cache python py2-pip git
@@ -18,8 +18,4 @@ RUN echo "Install AWS" && \
     echo "Done!"
     
 # must mount the local folder to /apps in container.
-docker run -ti --rm -v $(pwd):/apps -v ~/.kube/config:/root/.kube/config alpine/helm:2.9.0
-
-# run container as command
-alias helm="docker run -ti --rm -v $(pwd):/apps -v ~/.kube/config:/root/.kube/config alpine/helm:2.9.0"
-helm --help
+Run -ti --rm -v $(pwd):/apps -v ~/.kube/config:/root/.kube/config alpine/helm:2.9.0
