@@ -16,3 +16,10 @@ RUN echo "Install AWS" && \
     aws --version && \
     sam --version && \
     echo "Done!"
+    
+# must mount the local folder to /apps in container.
+docker run -ti --rm -v $(pwd):/apps -v ~/.kube/config:/root/.kube/config alpine/helm:2.9.0
+
+# run container as command
+alias helm="docker run -ti --rm -v $(pwd):/apps -v ~/.kube/config:/root/.kube/config alpine/helm:2.9.0"
+helm --help
