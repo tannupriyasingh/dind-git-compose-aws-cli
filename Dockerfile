@@ -1,14 +1,5 @@
 from docker:git
 from docker:18.06.3-ce-dind
-fROM linkyard/docker-helm:2.11.0
-
-RUN apk --no-cache add bash
-RUN apk --no-cache add --update curl wget ca-certificates
-RUN apk --no-cache add jq
-ENV SPRUCE_VERSION 1.18.2
-RUN wget https://github.com/geofffranks/spruce/releases/download/v${SPRUCE_VERSION}/spruce-linux-amd64 \
-  && chmod a+x spruce-linux-amd64 \
-  && mv spruce-linux-amd64 /usr/local/bin/spruce
 
 RUN apk add --no-cache python py2-pip git
 RUN pip install --no-cache-dir docker-compose==1.16.0
