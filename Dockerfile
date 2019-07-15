@@ -1,6 +1,8 @@
 from docker:git
 from docker:18.06.3-ce-dind
 
+
+docker run linkyard/docker-helm
 RUN apk add --no-cache python py2-pip git
 RUN pip install --no-cache-dir docker-compose==1.16.0
 RUN echo "Install AWS" && \
@@ -15,4 +17,7 @@ RUN echo "Install AWS" && \
     aws --version && \
     sam --version && \
     echo "Done!"
+   
+   
+
 
