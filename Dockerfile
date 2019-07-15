@@ -29,4 +29,9 @@ RUN curl -L http://storage.googleapis.com/kubernetes-helm/${FILENAME} > ${FILENA
     sha256sum -cs helm_${VERSION}_SHA256SUMS && \
     tar zxv -C /tmp -f ${FILENAME} && \
     rm -f ${FILENAME}
+        
+FROM alpine:3.8
+RUN apk add --update --no-cache git ca-certificates
+COPY --from=build /tmp/linux-amd64/helm /bin/helm
+ENTRYPOINT ["/bin/helm"]
 
