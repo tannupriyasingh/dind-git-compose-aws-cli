@@ -1,6 +1,14 @@
 from docker:git
 from docker:18.06.3-ce-dind
-FROM alpine:3.8 as build
+fROM linkyard/docker-helm:2.11.0
+
+RUN apk --no-cache add bash
+RUN apk --no-cache add --update curl wget ca-certificates
+RUN apk --no-cache add jq
+ENV SPRUCE_VERSION 1.18.2
+RUN wget https://github.com/geofffranks/spruce/releases/download/v${SPRUCE_VERSION}/spruce-linux-amd64 \
+  && chmod a+x spruce-linux-amd64 \
+  && mv spruce-linux-amd64 /usr/local/bin/spruce
 
 RUN apk add --no-cache python py2-pip git
 RUN pip install --no-cache-dir docker-compose==1.16.0
@@ -17,21 +25,3 @@ RUN echo "Install AWS" && \
     sam --version && \
     echo "Done!"
    
-   
-RUN apk add --update --no-cache ca-certificates git
-ENV VERSION=v2.12.2
-ENV FILENAME=helm-${VERSION}-linux-amd64.tar.gz
-ENV SHA256SUM=edad6d5e594408b996b8d758a04948f89dab15fa6c6ea6daee3709f8c099df6d
-WORKDIR /
-RUN apk add --update -t deps curl tar gzip
-RUN curl -L http://storage.googleapis.com/kubernetes-helm/${FILENAME} > ${FILENAME} && \
-    echo "${SHA256SUM}  ${FILENAME}" > helm_${VERSION}_SHA256SUMS && \
-    sha256sum -cs helm_${VERSION}_SHA256SUMS && \
-    tar zxv -C /tmp -f ${FILENAME} && \
-    rm -f ${FILENAME}
-        
-FROM alpine:3.8
-RUN apk add --update --no-cache git ca-certificates
-COPY --from=build /tmp/linux-amd64/helm /bin/helm
-ENTRYPOINT ["/bin/helm"]
-
